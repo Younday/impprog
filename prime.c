@@ -16,7 +16,7 @@ int main(int argc, char **argv[])
 {
 	int n, count = 0;
 	
-	printf("Type a non-negative integer :\n");
+	printf("Type a non-negative integer:\n");
 	scanf("%d", &n);
 	
 	for(int i = 2; i <= n / 2; i++){
@@ -25,8 +25,8 @@ int main(int argc, char **argv[])
 			break;
 		}
 	}
-	printf("%d\n", count);
-	if(count == 0 && n != 1){
+
+	if(count == 0 && n != 1 && n!= 0){
 		printf("%d is a prime number.\n", n);
 	}
 	else {

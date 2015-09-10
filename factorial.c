@@ -18,12 +18,12 @@ int main(int argc, char **argv[])
 {
 	long n, fact = 1;
 	
-	printf("Type a non-negative integer :\n");
+	printf("Type a non-negative integer:\n");
 	scanf("%ld", &n);
 	
 	for(int i = 1; i <= n; i++) {
 		fact = fact * i;
 	}
 	
-	printf("The factorial of %ld is %ld.\n", fact, n);
+	printf("The factorial of %ld is %ld.\n", n, fact);
 }
