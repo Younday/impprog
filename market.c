@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-	int orange, grapefruit, melons, obought, gbought, mbought, op, gp, mp, totalo = 100;
+	int obought, gbought, mbought, op, gp, mp, total, totalp;
 	
 	printf("price of an orange:\n");
 	scanf("%d", &op);
@@ -21,14 +21,18 @@ int main(int argc, char *argv[]) {
 	printf("price of a melon:\n");
 	scanf("%d", &mp);
 	
-	for(int i = 0; i <= totalo; i++) {
-		for(int j = 0; i <= totalo; i++) {
-			obought = i * op;
-			gbought = i * gp;
-			mbought = i * mp;
-			if(obought <= 10000 && gbought <= 10000-obought && mbought <= 10000-(obought+gbought)) {
-				printf("%d, %d, %d\n", obought, gbought, mbought);
+	for(int i = 1; i <= 100; i++) {
+		obought = i * op;
+		for(int j = 1; j <= 100; j++) {
+			gbought = j * gp;
+			mbought = 100 - (obought+gbought);
+			total = mbought/mp + gbought/gp + obought/op;
+			totalp = mbought + gbought + obought;
+			if(mbought > 0 && total == 100 && totalp <= 10000) {
+				printf("%d, %d, %d\n", obought/op, gbought/gp, mbought/mp);
+			}
 		}
 	}
-}
-}
+		
+	}
+
