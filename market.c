@@ -26,15 +26,18 @@ int main(int argc, char *argv[]) {
 			mbought = 100 - obought - gbought;
 			total = obought + gbought + mbought;
 			totalp = (gbought*gp) + (obought*op) + (mbought*mp);
-			if(totalp == 10000 && total == 100) {
+			if(totalp == 10000 && total == 100 && obought != 1 && gbought != 1 && mbought != 1) {
 				printf("%d oranges, %d grapefruits, %d melons\n", obought, gbought, mbought);
 			}
 			else if(totalp == 10000 && total == 100 && obought == 1) {
 				printf("%d orange, %d grapefruits, %d melons\n", obought, gbought, mbought);
 			}
 			else if(totalp == 10000 && total == 100 && mbought == 1) {
-				printf("%d orange, %d grapefruits, %d melon\n", obought, gbought, mbought);
+				printf("%d oranges, %d grapefruits, %d melon\n", obought, gbought, mbought);
 			}
+			else if(totalp == 10000 && total == 100 && gbought == 1) {
+				printf("%d oranges, %d grapefruit, %d melons\n", obought, gbought, mbought);
 			}
 		}
 	}
+}
