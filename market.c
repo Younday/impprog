@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-	int obought, gbought, mbought, op, gp, mp, total, totalp;
+	int mbought, op, gp, mp, total, totalp;
 	
 	printf("price of an orange: ");
 	scanf("%d", &op);
@@ -21,39 +21,33 @@ int main(int argc, char *argv[]) {
 	printf("price of a melon: ");
 	scanf("%d", &mp);
 	
-	for(int i = 0; i <= 100; i++) {
-		obought = i * op;
-		for(int j = 0; j <= 100; j++) {
-			gbought = j * gp;
-			for(int k = 0; k <= 100; k++) {
-				mbought = k * mp;
-				if(mbought/mp == 0 && mbought == 0) {
-					total = (gbought/gp) + (obought/op);
-					totalp = gbought + obought;
-				}
-				else if(obought/op == 0 && obought == 0){
-					total = (gbought/gp) + (mbought/mp);
-					totalp = obought + mbought;
-				}
-				else if(gbought/mp == 0 && gbought == 0){
-					total = (mbought/mp) + (obought/op);
-					totalp = mbought + obought;
-				}
-				else {
-					total = (mbought/mp) + (gbought/gp) + (obought/op);
-					totalp = mbought + gbought + obought;
-				}
-				
-				if(totalp == 10000 && total == 100 && obought/op == 1) {
-					printf("%d orange, %d grapefruits, %d melons\n", obought/op, gbought/gp, mbought/mp);
-				}
-				else if(totalp == 10000 && total == 100 && obought/op != 1) {
-					printf("%d oranges, %d grapefruits, %d melons\n", obought/op, gbought/gp, mbought/mp);
-					
+	for(int obought = 0; obought <= 100; obought++) {
+		for(int gbought = 0; gbought <= 100; gbought++) {
+			mbought = 100 - obought - gbought;
+			total = obought + gbought + mbought;
+			totalp = (gbought*gp) + (obought*op) + (mbought*mp);
+			if(totalp == 10000 && total == 100 && obought <= 1) {
+				printf("%d orange, %d grapefruits, %d melons\n", obought, gbought, mbought);
+			}
+			else if(totalp == 10000 && total == 100 && obought > 1) {
+				printf("%d oranges, %d grapefruits, %d melons\n", obought, gbought, mbought);
+			}
+			else if(totalp == 10000 && total == 100 && gbought <= 1) {
+				printf("%d oranges, %d grapefruit, %d melons\n", obought, gbought, mbought);
+			}
+			else if(totalp == 10000 && total == 100 && gbought > 1)	{
+				printf("%d oranges, %d grapefruits, %d melons\n", obought, gbought, mbought);
+			}
+			else if(totalp == 10000 && total == 100 && mbought <= 1) {
+				printf("%d oranges, %d grapefruits, %d melon\n", obought, gbought, mbought);
+			}
+			else if(totalp == 10000 && total == 100 && mbought > 1){
+				printf("%d oranges, %d grapefruits, %d melons\n", obought, gbought, mbought);
 				}
 			}
 		}
 	}
+
 		
-}
+
 
