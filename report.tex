@@ -140,35 +140,83 @@ int main(int argc, char *argv[]) {
 
 \item Input: (prices of the oranges, grapefruits and melons in cents)
 \begin{lstlisting}[style = stdio]
-0 0
-4 8
-9 1
-5 8
+100
+0
+0
 \end{lstlisting}
 
   Output:
 \begin{lstlisting}[style = stdio]
-The lines do not intersects each other.
+100 oranges, 0 grapefruits, 0 melons
 \end{lstlisting}
 
 
 \item Input: (prices of the oranges, grapefruits and melons in cents)
 \begin{lstlisting}[style = stdio]
-0 0
-9 9
-5 5
-9 1
+99
+100
+101
 \end{lstlisting}
 
   Output:
 \begin{lstlisting}[style = stdio]
-The lines do not intersects each other.
+0 oranges, 100 grapefruits, 0 melons
+1 orange, 98 grapefruits, 1 melon
+2 oranges, 96 grapefruits, 2 melons
+3 oranges, 94 grapefruits, 3 melons
+4 oranges, 92 grapefruits, 4 melons
+5 oranges, 90 grapefruits, 5 melons
+6 oranges, 88 grapefruits, 6 melons
+7 oranges, 86 grapefruits, 7 melons
+8 oranges, 84 grapefruits, 8 melons
+9 oranges, 82 grapefruits, 9 melons
+10 oranges, 80 grapefruits, 10 melons
+11 oranges, 78 grapefruits, 11 melons
+12 oranges, 76 grapefruits, 12 melons
+13 oranges, 74 grapefruits, 13 melons
+14 oranges, 72 grapefruits, 14 melons
+15 oranges, 70 grapefruits, 15 melons
+16 oranges, 68 grapefruits, 16 melons
+17 oranges, 66 grapefruits, 17 melons
+18 oranges, 64 grapefruits, 18 melons
+19 oranges, 62 grapefruits, 19 melons
+20 oranges, 60 grapefruits, 20 melons
+21 oranges, 58 grapefruits, 21 melons
+22 oranges, 56 grapefruits, 22 melons
+23 oranges, 54 grapefruits, 23 melons
+24 oranges, 52 grapefruits, 24 melons
+25 oranges, 50 grapefruits, 25 melons
+26 oranges, 48 grapefruits, 26 melons
+27 oranges, 46 grapefruits, 27 melons
+28 oranges, 44 grapefruits, 28 melons
+29 oranges, 42 grapefruits, 29 melons
+30 oranges, 40 grapefruits, 30 melons
+31 oranges, 38 grapefruits, 31 melons
+32 oranges, 36 grapefruits, 32 melons
+33 oranges, 34 grapefruits, 33 melons
+34 oranges, 32 grapefruits, 34 melons
+35 oranges, 30 grapefruits, 35 melons
+36 oranges, 28 grapefruits, 36 melons
+37 oranges, 26 grapefruits, 37 melons
+38 oranges, 24 grapefruits, 38 melons
+39 oranges, 22 grapefruits, 39 melons
+40 oranges, 20 grapefruits, 40 melons
+41 oranges, 18 grapefruits, 41 melons
+42 oranges, 16 grapefruits, 42 melons
+43 oranges, 14 grapefruits, 43 melons
+44 oranges, 12 grapefruits, 44 melons
+45 oranges, 10 grapefruits, 45 melons
+46 oranges, 8 grapefruits, 46 melons
+47 oranges, 6 grapefruits, 47 melons
+48 oranges, 4 grapefruits, 48 melons
+49 oranges, 2 grapefruits, 49 melons
+50 oranges, 0 grapefruits, 50 melons
 \end{lstlisting}
 
 \end{itemize}
 
 \section{Evaluation}
-The program was in fact easy to design to pass simple tests like the first test case, but when we had to check for, for example the value of {\tt mbought}, the program logic of the if-statements became somewhat more complex. At first we had some trouble exactly figuring out what the exact logic should be, but with some help and a lot of thought we got the program to pass all the testcases from Justitia. 
+The program was in fact easy to design to pass simple tests like the first test result, but when we had to check for, for example the value of {\tt mbought}, the program logic of the if-statements became somewhat more complex. At first we had some trouble exactly figuring out what the exact logic should be, but with some help and a lot of thought we got the program to pass all the test cases from Justitia. 
 
-We have chosen to write down all the possible statements that we could print instead of splitting the printf statements. We could have checked for each part of the printf statement if it should be a plural or singular form. 
+We have chosen to write down all the possible statements that we could print instead of splitting the {\tt printf} statements. We could have checked for each part of the {\tt printf} statement if it should be a plural or singular form. 
 \end{document}
