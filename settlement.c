@@ -60,10 +60,22 @@ int main(int argc, char *argv[]) {
 
   float average =  (paidByStudent(firstStudent) + paidByStudent(secondStudent) + paidByStudent(thirdStudent)) / 3;
   
+  if(paidByStudent(secondStudent) < average && paidByStudent(secondStudent) < paidByStudent(firstStudent) && paidByStudent(secondStudent) < paidByStudent(thirdStudent)) {
+	  swapStudents(&firstStudent, &secondStudent);
+  }
+  else if(paidByStudent(thirdStudent) < average && paidByStudent(thirdStudent) < paidByStudent(firstStudent) && paidByStudent(thirdStudent) < paidByStudent(secondStudent)){
+	  swapStudents(&firstStudent, &thirdStudent);
+  }
+  else if(paidByStudent(thirdStudent) < paidByStudent(secondStudent)) {
+	  swapStudents(&secondStudent, &thirdStudent);
+  }
+
+  
   float remainderFirst = paidByStudent(firstStudent) - average;
   float remainderSecond = paidByStudent(secondStudent) - average;
   float remainderThird = paidByStudent(thirdStudent) - average;
   
+
   if(paidByStudent(firstStudent) > average) {
 	  printNameOfStudent(firstStudent);
 	  printf(" receives %3.2f\n", remainderFirst);
