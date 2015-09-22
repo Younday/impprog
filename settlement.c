@@ -58,16 +58,16 @@ void readInput() {
 int main(int argc, char *argv[]) {
   readInput();
 
-  float average =  (paidByStudent(firstStudent) + paidByStudent(secondStudent) + paidByStudent(thirdStudent)) / 3;
+  float average = (paidByStudent(firstStudent) + paidByStudent(secondStudent) + paidByStudent(thirdStudent)) / 3;
   
-  if(paidByStudent(secondStudent) < average && paidByStudent(secondStudent) < paidByStudent(firstStudent) && paidByStudent(secondStudent) < paidByStudent(thirdStudent)) {
-	  swapStudents(&firstStudent, &secondStudent);
+  if(paidByStudent(firstStudent) > paidByStudent(secondStudent)) {
+	  swapStudents(&secondStudent, &firstStudent);
   }
-  else if(paidByStudent(thirdStudent) < average && paidByStudent(thirdStudent) < paidByStudent(firstStudent) && paidByStudent(thirdStudent) < paidByStudent(secondStudent)){
-	  swapStudents(&firstStudent, &thirdStudent);
-  }
-  else if(paidByStudent(thirdStudent) < paidByStudent(secondStudent)) {
+  if(paidByStudent(secondStudent) > paidByStudent(thirdStudent)) {
 	  swapStudents(&secondStudent, &thirdStudent);
+  }
+  if(paidByStudent(firstStudent) > paidByStudent(secondStudent)) {
+	  swapStudents(&firstStudent, &secondStudent);
   }
 
   
@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
   float remainderThird = paidByStudent(thirdStudent) - average;
   
 
-  if(paidByStudent(firstStudent) > average) {
+  if(paidByStudent(firstStudent) > average || remainderFirst == 0) {
 	  printNameOfStudent(firstStudent);
 	  printf(" receives %3.2f\n", remainderFirst);
   }
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 	  printf(" pays %3.2f\n", average - paidByStudent(firstStudent));
   }
   
-  if(paidByStudent(secondStudent) > average) {
+  if(paidByStudent(secondStudent) > average || remainderSecond == 0) {
 	  printNameOfStudent(secondStudent);
 	  printf(" receives %3.2f\n", remainderSecond);
   }
@@ -94,7 +94,7 @@ int main(int argc, char *argv[]) {
 	  printf(" pays %3.2f\n", average - paidByStudent(secondStudent));
   }
   
-  if(paidByStudent(thirdStudent) > average) {
+  if(paidByStudent(thirdStudent) > average || remainderThird == 0) {
 	  printNameOfStudent(thirdStudent);
 	  printf(" receives %3.2f\n", remainderThird);
   }
