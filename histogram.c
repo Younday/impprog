@@ -32,25 +32,28 @@ int arrayMax(int length, int arr[]) {
 
 void printHistogram(int freq[10]) {
   int max;
-  arrayMax(10, freq);
-  for(int j = max; j > max; j--){
+  max = arrayMax(10, freq);
+  for(int j = max; j > 0; j--){
 	   
 	   for(int i = 0; i < 10; i++) {
 		   
-		  if(freq[i] == max) {
+		  if(freq[i] < 0) {
 			  
-			  printf("*");
+			  printf(". ");
 		  }
 		  else {
-			  printf(".");
+			  printf("* ");
 		  }
 	  }
+	  printf("\n");
   }
+  printf("1 2 3 4 5 6 7 8 9 10\n");
 }
 
 int main(int argc, char *argv[]) {
   int *grades;
   int frequencies[10];
+  //memset(frequencies, 0, sizeof(int)*sz);
 
   grades = readGrades();
   computeFrequencies(grades);
