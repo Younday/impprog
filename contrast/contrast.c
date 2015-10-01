@@ -83,9 +83,10 @@ void savePGM(int width, int height, int **pixel) {
 }
 
 int minimumValue(int width, int height, int **pixel) {
-	int row, column, min = 255;
+	int row, column, min; 
+	min = pixel[0][0];
 	for(row = 0; row < height; row++) {
-		for(column = 0; column <  width; column++) {
+		for(column = 1; column <  width; column++) {
 			if(pixel[row][column] < min) {
 				min = pixel[row][column];
 			}
@@ -95,9 +96,10 @@ int minimumValue(int width, int height, int **pixel) {
 }
 
 int maximumValue(int width, int height, int **pixel) {
-	int row, column, max = 0;
+	int row, column, max; 
+	max = pixel[0][0];
 	for(row = 0; row < height; row++) {
-		for(column = 0; column <  width; column++) {
+		for(column = 1; column <  width; column++) {
 			if(pixel[row][column] > max) {
 				max = pixel[row][column];
 			}
@@ -107,14 +109,14 @@ int maximumValue(int width, int height, int **pixel) {
 }
 
 void enhanceContrast(int width, int height, int **pixel) {
-	int max, min, row, column;
-	minimumValue(width, height, pixel);
-    maximumValue(width, height, pixel);
-	if(max - min > 255) {
+	int row, column;
+	int min = minimumValue(width, height, pixel);
+    int max = maximumValue(width, height, pixel);
 		for(row = 0; row < height; row++) {
 			for(column = 0; column < width; column++) {
-				pixel[row][column] = ((pixel[row][column] - min) * 255) / (max - min);
-			}
+				pixel[row][column] -= min;
+				pixel[row][column] *= (255.0/(max - min));
+			
 		}
 	}
 }
@@ -122,12 +124,11 @@ void enhanceContrast(int width, int height, int **pixel) {
 
 int main(int argc, char *argv[]) {
   int width, height;
-  int **pixel;
-  int min, max;
+  static int **pixel;
 
   pixel = readPGM(&width, &height);
+  enhanceContrast(width, height, pixel);
   savePGM(width, height, pixel);
-  
-  enchanceContrast(width, height, pixel);
+  free(pixel);
   return 0;
 }
