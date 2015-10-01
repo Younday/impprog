@@ -1,0 +1,242 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{a4wide}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{mathtools}
+\definecolor{Gray}{gray}{0.95}
+
+% This is the list style for displaying C source code:
+\lstdefinestyle{code}{
+    language = C,					% The language of the code snippets
+    basicstyle = \small\ttfamily,	% Font of the text
+    numbers = left,					% Position of the line numbers
+    numberstyle = \footnotesize,	% Style of line numbers
+    frame = tb,				        % Style of surrounding frame
+    framextopmargin=.75mm,         % Space margin top
+    framexbottommargin=.75mm,      % Space margin bottom
+    framexleftmargin=2mm,          % Space margin left
+    framexrightmargin=2mm,         % Space margin right
+    tabsize = 3,					% Size of tab character
+    breaklines = true,             % Wrap lines of code that are too long
+    columns = fullflexible,			
+    showstringspaces = false,
+    backgroundcolor = \color{Gray}
+}
+
+% This is the list style for displaying input/output. It is different from the style above, since you don't need C keywords to be highlighted in these listings. Line numbers are also emitted in this style.
+\lstdefinestyle{stdio}{
+    basicstyle = \small\ttfamily,	% Font of the text
+    frame = tb,				        % Style of the surrounding frame
+    framextopmargin=.75mm,         % Space margin top
+    framexbottommargin=.75mm,      % Space margin bottom
+    framexleftmargin=2mm,          % Space margin left
+    framexrightmargin=2mm,         % Space margin right
+    tabsize = 3,					% Size of tab character
+    breaklines = true,             % Wrap lines of text that are too long
+    columns = flexible,			
+    showstringspaces = false,
+    backgroundcolor = \color{Gray}
+}
+
+\title{Discs assignment}
+\author{Y. Moustaghfir \& S. S. Hamed\\
+        S2909758 \& S2562677}
+%------------------------------------------------------------%
+% This is where your document starts:
+
+\begin{document}
+\maketitle
+
+\section{Problem description}
+The program needs to calculate for a number of discs in a certain area the amount of discs that do not overlap each other. The input of the program would be first the amount of discs and after that the {\tt x} and {\tt y} and {\tt r}, which is the radius of the disc. The {\tt x} and {\tt y} value are coordinates for each disc. The precise definition of overlapping is that the discs are either on top of each other, which is of course obvious, or when the discs touch each other at the edges. 
+
+\section{Problem analysis}
+We start with the input which is given in the form of {\tt x, y, r} and of course the number of discs we want to have. With this information you have to calculate each position of the discs in that area. With that information it is possible to calculate the exact positions of all the discs
+
+\section{Design}
+
+
+\section{Program code}
+\begin{lstlisting}[style = code, title = market.c]
+/*
+ * program: discs.c
+ * 
+ * Copyright 2015 Younes Moustaghfir, Sharif Hamed
+ */ 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+void *safeMalloc(int size) {
+  void *ptr = malloc(size);
+  if (ptr == NULL) {
+    printf("\nError: memory allocation failed....abort\n");
+    exit(-1);
+  }
+  return ptr;
+}
+
+int **makeDiscs(int sz) {
+  int row, **arr;
+  arr = safeMalloc(sz*sizeof(int *));
+  for (row=0; row<sz; row++) {
+    arr[row] = safeMalloc(4*sizeof(int));
+  }
+  return arr;
+}
+
+int intersect(int disc1, int disc2, int **discs) {
+	int sxD, syD, count = 0;
+	int xD = discs[disc1][0] - discs[disc2][0];
+	int yD = discs[disc1][1] - discs[disc2][1];
+	sxD = xD * xD;
+	syD = yD * yD;
+	if(sxD + syD <= (discs[disc1][2]+discs[disc2][2])*(discs[disc1][2]+discs[disc2][2])) {
+		count = 1;
+	}
+	return count;
+}
+
+int countIntersect(int sz, int **discs) {
+	int count = 0;
+	for(int i = 0; i < (sz-1); i++) {
+		for(int j = i + 1; j < sz; j++) {
+			if(intersect(i, j, discs)) {
+				discs[i][3] = 1;
+				discs[j][3] = 1;
+			}
+		}
+	}
+	for(int i = 0; i < sz; i++) {
+		if(discs[i][3]) {
+			count++;
+		}
+	}
+	return count;
+}
+
+
+
+int main(int argc, char **argv)
+{
+	int count;
+	int sz;
+	int **discs;
+	scanf("%d\n", &sz);
+	discs = makeDiscs(sz);
+	for(int i = 0; i < sz; i++) {
+		scanf("%d %d %d\n", &discs[i][0], &discs[i][1], &discs[i][2]);
+	}
+	count = countIntersect(sz, discs);
+	printf("number of discs: %d\n", sz);
+	printf("number of non-overlapping discs: %d\n", sz-count);
+	return 0;
+}
+
+\end{lstlisting}
+
+\section{Test results}
+
+\begin{itemize}
+
+\item Input: (prices of the oranges, grapefruits and melons in cents)
+\begin{lstlisting}[style = stdio]
+88
+99
+102
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+1 orange, 62 grapefruits, 37 melons
+4 oranges, 48 grapefruits, 48 melons
+7 oranges, 34 grapefruits, 59 melons
+10 oranges, 20 grapefruits, 70 melons
+13 oranges, 6 grapefruits, 81 melons
+\end{lstlisting}
+
+
+\item Input: (prices of the oranges, grapefruits and melons in cents)
+\begin{lstlisting}[style = stdio]
+100
+0
+0
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+100 oranges, 0 grapefruits, 0 melons
+\end{lstlisting}
+
+
+\item Input: (prices of the oranges, grapefruits and melons in cents)
+\begin{lstlisting}[style = stdio]
+99
+100
+101
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+0 oranges, 100 grapefruits, 0 melons
+1 orange, 98 grapefruits, 1 melon
+2 oranges, 96 grapefruits, 2 melons
+3 oranges, 94 grapefruits, 3 melons
+4 oranges, 92 grapefruits, 4 melons
+5 oranges, 90 grapefruits, 5 melons
+6 oranges, 88 grapefruits, 6 melons
+7 oranges, 86 grapefruits, 7 melons
+8 oranges, 84 grapefruits, 8 melons
+9 oranges, 82 grapefruits, 9 melons
+10 oranges, 80 grapefruits, 10 melons
+11 oranges, 78 grapefruits, 11 melons
+12 oranges, 76 grapefruits, 12 melons
+13 oranges, 74 grapefruits, 13 melons
+14 oranges, 72 grapefruits, 14 melons
+15 oranges, 70 grapefruits, 15 melons
+16 oranges, 68 grapefruits, 16 melons
+17 oranges, 66 grapefruits, 17 melons
+18 oranges, 64 grapefruits, 18 melons
+19 oranges, 62 grapefruits, 19 melons
+20 oranges, 60 grapefruits, 20 melons
+21 oranges, 58 grapefruits, 21 melons
+22 oranges, 56 grapefruits, 22 melons
+23 oranges, 54 grapefruits, 23 melons
+24 oranges, 52 grapefruits, 24 melons
+25 oranges, 50 grapefruits, 25 melons
+26 oranges, 48 grapefruits, 26 melons
+27 oranges, 46 grapefruits, 27 melons
+28 oranges, 44 grapefruits, 28 melons
+29 oranges, 42 grapefruits, 29 melons
+30 oranges, 40 grapefruits, 30 melons
+31 oranges, 38 grapefruits, 31 melons
+32 oranges, 36 grapefruits, 32 melons
+33 oranges, 34 grapefruits, 33 melons
+34 oranges, 32 grapefruits, 34 melons
+35 oranges, 30 grapefruits, 35 melons
+36 oranges, 28 grapefruits, 36 melons
+37 oranges, 26 grapefruits, 37 melons
+38 oranges, 24 grapefruits, 38 melons
+39 oranges, 22 grapefruits, 39 melons
+40 oranges, 20 grapefruits, 40 melons
+41 oranges, 18 grapefruits, 41 melons
+42 oranges, 16 grapefruits, 42 melons
+43 oranges, 14 grapefruits, 43 melons
+44 oranges, 12 grapefruits, 44 melons
+45 oranges, 10 grapefruits, 45 melons
+46 oranges, 8 grapefruits, 46 melons
+47 oranges, 6 grapefruits, 47 melons
+48 oranges, 4 grapefruits, 48 melons
+49 oranges, 2 grapefruits, 49 melons
+50 oranges, 0 grapefruits, 50 melons
+\end{lstlisting}
+
+\end{itemize}
+
+\section{Evaluation}
+The program was in fact easy to design to pass simple tests like the first test result, but when we had to check for, for example the value of {\tt mbought}, the program logic of the if-statements became somewhat more complex. At first we had some trouble exactly figuring out what the exact logic should be, but with some help and a lot of thought we got the program to pass all the test cases from Justitia. 
+
+We have chosen to write down all the possible statements that we could print instead of splitting the {\tt printf} statements. We could have checked for each part of the {\tt printf} statement if it should be a plural or singular form. 
+\end{document}
