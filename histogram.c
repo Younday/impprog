@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 int sz;
-int freq[10];
+static int frequencies[10];
 
 int *readGrades() {
   scanf("%d\n", &sz);
-  int *grades = malloc(sz*sizeof(int));
+  int *grades = malloc(sz+1*sizeof(int));
   
   for(int i = 0; i < sz; i++){
 	   scanf("%d", &grades[i]);
@@ -13,9 +13,9 @@ int *readGrades() {
   return grades;
 }
 	
-void computeFrequencies(int grades[]) {
+void computeFrequencies(int grades[], int frequencies[]) {
   for(int i = 0; i < sz ; i++) {
-	  freq[grades[i]]++;
+	  frequencies[grades[i]-1]++;
   }
 }
 
@@ -30,19 +30,17 @@ int arrayMax(int length, int arr[]) {
 }
 	
 
-void printHistogram(int freq[10]) {
-  int max;
-  max = arrayMax(10, freq);
-  for(int j = max; j > 0; j--){
+void printHistogram(int frequencies[10]) {
+  for(int j = arrayMax(10, frequencies); j > 0; j--){
 	   
 	   for(int i = 0; i < 10; i++) {
 		   
-		  if(freq[i] < 0) {
+		  if(frequencies[i] >= j) {
 			  
-			  printf(". ");
+			  printf("* ");
 		  }
 		  else {
-			  printf("* ");
+			  printf(". ");
 		  }
 	  }
 	  printf("\n");
@@ -52,11 +50,9 @@ void printHistogram(int freq[10]) {
 
 int main(int argc, char *argv[]) {
   int *grades;
-  int frequencies[10];
-  //memset(frequencies, 0, sizeof(int)*sz);
-
+ 
   grades = readGrades();
-  computeFrequencies(grades);
+  computeFrequencies(grades, frequencies);
   printHistogram(frequencies);
 
   return 0;
