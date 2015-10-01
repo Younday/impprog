@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+/* safe replacement for malloc. */
+void *safeMalloc(int size) {
+  void *ptr = malloc(size);
+  if (ptr == NULL) {
+    printf("\nError: memory allocation failed....abort\n");
+    exit(-1);
+  }
+  return ptr;
+}
+
+int minimumValue(int width, int height, int **pixel) {
+	int minimum;
+	minimum = pixel[0][0];
+	for(int i = 0; i<height; i++) {
+		for(int j = 1; j<width; j++) {
+			if(pixel[i][j]<minimum) {
+				minimum = pixel[i][j];
+			}
+		}
+	}
+	return minimum;
+}
+int maximumValue(int width, int height, int **pixel) {
+	int maximum;
+	maximum = pixel[0][0];
+	for(int i = 0; i<height; i++) {
+		for(int j = 1; j<width; j++) {
+			if(pixel[i][j]>maximum) {
+				maximum = pixel[i][j];
+			}
+		}
+	}
+	return maximum;
+}
+void enhanceContrast(int width, int height, int **pixel) {
+	int max = maximumValue(width,height,pixel);
+	int min = minimumValue(width,height,pixel);
+	for(int i = 0; i<height; i++) {
+		for(int j = 0; j<width; j++) {
+			pixel[i][j] -=min;
+			pixel[i][j] *= 255.0/(max-min);
+		}
+	}
+}
+
+/* make a 2D dynamic array */
+int **makeIntArray2D(int width, int height) {
+  int row, **arr;
+  arr = safeMalloc(height*sizeof(int *));
+  for (row=0; row<height; row++) {
+    arr[row] = safeMalloc(width*sizeof(int));
+  }
+  return arr;
+}
+
+/* DO NOT EDIT THIS FUNCTION! */
+/* read PGM file and return image. */
+int **readPGM(int *width, int *height) {
+  int pgmtype, dummy;
+  int row, column;
+  int **pixel;
+
+  scanf("P%d", &pgmtype);
+  if ((pgmtype != 2) && (pgmtype != 5)) {
+    printf("Error: this program can only read PGM images ");
+    printf("of the types P2 and P5.\n");
+    exit(-1);
+  }
+  while (getchar() != '\n');
+  dummy = getchar();
+  while (dummy == '#') {
+    /* skip comment line(s) of PGM file */
+    while (getchar() != '\n');
+    dummy = getchar();
+  }
+  ungetc(dummy, stdin);  /* push character back to input */
+  scanf("%d %d\n", width, height);
+  scanf("%d\n", &dummy);
+
+  pixel = makeIntArray2D(*width, *height);
+
+  if (pgmtype == 2) {
+    for (row = 0; row < *height; row++) {
+      for (column = 0; column < *width; column++) {
+        scanf("%d", &pixel[row][column]);
+      }
+    }
+  } else {
+    for (row = 0; row < *height; row++) {
+      for (column = 0; column < *width; column++) {
+        pixel[row][column] = getchar();
+      }
+    }
+  }
+  return pixel;
+}
+
+/* DO NOT EDIT THIS FUNCTION! */
+/* save image as PGM file. */
+void savePGM(int width, int height, int **pixel) {
+  int row, column, cnt;
+  printf("P2\n");
+  printf("%d %d\n255\n", width, height);
+  cnt = 0;
+  for (row=0; row < height; row++) {
+    for (column=0; column < width; column++) {
+      printf("%3d ", pixel[row][column]);
+      cnt = (cnt + 1)%17;
+      if (cnt == 0) {
+        printf("\n");
+      }
+    }
+  }
+  printf("\n");
+}
+
+int main(int argc, char *argv[]) {
+  int width, height;
+  int **pixel;
+
+  pixel = readPGM(&width, &height);
+  enhanceContrast(width, height, pixel);
+  savePGM(width, height, pixel);
+  free(pixel);
+  return 0;
+}
