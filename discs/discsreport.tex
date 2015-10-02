@@ -52,13 +52,47 @@
 The program needs to calculate for a number of discs in a certain area the amount of discs that do not overlap each other. The input of the program would be first the amount of discs and after that the {\tt x} and {\tt y} and {\tt r}, which is the radius of the disc. The {\tt x} and {\tt y} value are coordinates for each disc. The precise definition of overlapping is that the discs are either on top of each other, which is of course obvious, or when the discs touch each other at the edges. 
 
 \section{Problem analysis}
-We start with the input which is given in the form of {\tt x, y, r} and of course the number of discs we want to have. With this information you have to calculate each position of the discs in that area. With that information it is possible to calculate the exact positions of all the discs
+We start with looking at what we can do with our input. It seems that with the $x$ and $y$ coordinates we should be able to get the distance between two discs. First we compute the distance on the $x$ and $y$ axis between two discs. Let's call these $\Delta x$ and $\Delta y$. After we computed these we are able to use Pythagoras his method:
+\begin{equation}
+a^2 + b^2 =  c^2
+\end{equation}
+\begin{figure}[h]
+\caption{Distance between discs that needs to be calculated}
+\centering
+\includegraphics[width=0.5\textwidth]{img3.png}
+\end{figure}
+When using our coordinates it will be:
+\begin{equation}
+\Delta x^2 + \Delta y^2 = c^2
+\end{equation}
+with knowing $c^2$ we know the squared distance between the two centres of the discs. Now if we want to know if the discs overlap we need the other known input namely, the radius. We come out on the following equation:
+\begin{equation}
+if\:\:\:\ c^2 < (r_{1} + r_{2})^2\:\:\:discs\: overlap
+\end{equation}
+\begin{center}
+\begin{minipage}{.6\textwidth}
+\centering
+and
+\end{minipage}
+\end{center} 
+\begin{equation}
+if\:\:\:\ c^2 \geq (r_{1} + r_{2})^2\:\:\:discs\: do\:not\:overlap
+\end{equation}   
+here $r_{1} \: and \: r_{2}$ are the two radius from the different discs.
+
 
 \section{Design}
+We start with our included {\tt safeMalloc} function to make sure that the memory is allocated correctly. After that we need to create a multidimensional array to store the values of each disc. 
+
+In the {\tt makeDiscs} function, there is room for not just 3 int ({\tt x}, {\tt y} and {\tt z}), but also for a forth, which we will explain later. The next function calculates if there are discs that intersect. That is namely why the function is called {\tt intersect}. This function calculates the distance with the given array of coordinates and radius between to discs and the function is given two disc to calculate whether the two discs actually intersect or not. If this is the case, we store the value 1 in the variable {\tt count}. 
+
+The next function is the {\tt countIntersect} function, which counts the different intersections between all the discs. The {\tt countIntersect} function has the input {\tt sz} and the array {\tt discs}. Given the size and the array, this function will loop over the array and after that, it will assign to each row(or each disc actually) a forth value if the two discs intersect. This forth value is to indicate whether the there has been an intersection between discs. If there is no forth value assigned to a certain disk, then there was no intersection between that disc and another. After that, we loop over each disc and increment the variable {\tt count} if there is a value found in the fourth index.
+
+Then we end up in our main, where we ask the user for the input and store that in the array {\tt discs} and we store the size of the array in the variable {\tt sz}. After that we call our function to calculate the intersecting discs, and we print the number of discs and the number of non-overlapping discs. 
 
 
 \section{Program code}
-\begin{lstlisting}[style = code, title = market.c]
+\begin{lstlisting}[style = code, title = discs.c]
 /*
  * program: discs.c
  * 
@@ -141,102 +175,61 @@ int main(int argc, char **argv)
 
 \begin{itemize}
 
-\item Input: (prices of the oranges, grapefruits and melons in cents)
+\item Input: First the size of the array, then coordinates and radius. ({\tt x}, {\tt y} and {\tt r})
 \begin{lstlisting}[style = stdio]
-88
-99
-102
+10
+  0   0   5
+  1   7   1
+  6   0   3
+-12   9  10
+  8   8   6
+ 15   3   4
+ 13   2   2
+  7 -10   7
+  3  15   2
+ -9  -7   7
 \end{lstlisting}
 
   Output:
 \begin{lstlisting}[style = stdio]
-1 orange, 62 grapefruits, 37 melons
-4 oranges, 48 grapefruits, 48 melons
-7 oranges, 34 grapefruits, 59 melons
-10 oranges, 20 grapefruits, 70 melons
-13 oranges, 6 grapefruits, 81 melons
+number of discs: 10
+number of non-overlapping discs: 3
 \end{lstlisting}
 
 
-\item Input: (prices of the oranges, grapefruits and melons in cents)
+\item Input:
 \begin{lstlisting}[style = stdio]
-100
-0
-0
-\end{lstlisting}
-
-  Output:
-\begin{lstlisting}[style = stdio]
-100 oranges, 0 grapefruits, 0 melons
-\end{lstlisting}
-
-
-\item Input: (prices of the oranges, grapefruits and melons in cents)
-\begin{lstlisting}[style = stdio]
-99
-100
-101
+5
+  2   4   5
+  3   7   1
+-2   -3   3
+-12   9  10
+  9   5   6
 \end{lstlisting}
 
   Output:
 \begin{lstlisting}[style = stdio]
-0 oranges, 100 grapefruits, 0 melons
-1 orange, 98 grapefruits, 1 melon
-2 oranges, 96 grapefruits, 2 melons
-3 oranges, 94 grapefruits, 3 melons
-4 oranges, 92 grapefruits, 4 melons
-5 oranges, 90 grapefruits, 5 melons
-6 oranges, 88 grapefruits, 6 melons
-7 oranges, 86 grapefruits, 7 melons
-8 oranges, 84 grapefruits, 8 melons
-9 oranges, 82 grapefruits, 9 melons
-10 oranges, 80 grapefruits, 10 melons
-11 oranges, 78 grapefruits, 11 melons
-12 oranges, 76 grapefruits, 12 melons
-13 oranges, 74 grapefruits, 13 melons
-14 oranges, 72 grapefruits, 14 melons
-15 oranges, 70 grapefruits, 15 melons
-16 oranges, 68 grapefruits, 16 melons
-17 oranges, 66 grapefruits, 17 melons
-18 oranges, 64 grapefruits, 18 melons
-19 oranges, 62 grapefruits, 19 melons
-20 oranges, 60 grapefruits, 20 melons
-21 oranges, 58 grapefruits, 21 melons
-22 oranges, 56 grapefruits, 22 melons
-23 oranges, 54 grapefruits, 23 melons
-24 oranges, 52 grapefruits, 24 melons
-25 oranges, 50 grapefruits, 25 melons
-26 oranges, 48 grapefruits, 26 melons
-27 oranges, 46 grapefruits, 27 melons
-28 oranges, 44 grapefruits, 28 melons
-29 oranges, 42 grapefruits, 29 melons
-30 oranges, 40 grapefruits, 30 melons
-31 oranges, 38 grapefruits, 31 melons
-32 oranges, 36 grapefruits, 32 melons
-33 oranges, 34 grapefruits, 33 melons
-34 oranges, 32 grapefruits, 34 melons
-35 oranges, 30 grapefruits, 35 melons
-36 oranges, 28 grapefruits, 36 melons
-37 oranges, 26 grapefruits, 37 melons
-38 oranges, 24 grapefruits, 38 melons
-39 oranges, 22 grapefruits, 39 melons
-40 oranges, 20 grapefruits, 40 melons
-41 oranges, 18 grapefruits, 41 melons
-42 oranges, 16 grapefruits, 42 melons
-43 oranges, 14 grapefruits, 43 melons
-44 oranges, 12 grapefruits, 44 melons
-45 oranges, 10 grapefruits, 45 melons
-46 oranges, 8 grapefruits, 46 melons
-47 oranges, 6 grapefruits, 47 melons
-48 oranges, 4 grapefruits, 48 melons
-49 oranges, 2 grapefruits, 49 melons
-50 oranges, 0 grapefruits, 50 melons
+number of discs: 5
+number of non-overlapping discs: 1
+\end{lstlisting}
+
+
+\item Input: 
+\begin{lstlisting}[style = stdio]
+3
+ -5   3   4
+  3  -7   1
+ -2  -3   3
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+number of discs: 
+number of non-overlapping discs: 1
 \end{lstlisting}
 
 \end{itemize}
 
 \section{Evaluation}
-The program was in fact easy to design to pass simple tests like the first test result, but when we had to check for, for example the value of {\tt mbought}, the program logic of the if-statements became somewhat more complex. At first we had some trouble exactly figuring out what the exact logic should be, but with some help and a lot of thought we got the program to pass all the test cases from Justitia. 
-
-We have chosen to write down all the possible statements that we could print instead of splitting the {\tt printf} statements. We could have checked for each part of the {\tt printf} statement if it should be a plural or singular form. 
+This assignment took us more time than expected. We understood the problem fast and also we knew how to solve it without using any  of angles(which was not given). The way to compute one comparison was not hard, but to make the loop work with a multidimensional-array took the longest.   
 \end{document}
