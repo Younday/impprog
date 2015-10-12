@@ -24,21 +24,34 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+
 
 int numRoute(int xb, int yb, int xe, int ye, int n) {
-	int dx = xe - xb;
-	int dy = ye - yb;
 	int count = 0;
 	
-	if(n == 0) {
-		return count;
-	}
-	else {
-		if(numRoute(xb = xe, yb = ye, xe + dx, ye + dy, n - 1)) {
-			return count++;
-		}
+	if(n == 0 && xb == xe && yb == ye) {
+		return 1;
 	}
 	
+	if(abs(xe - xb) + abs(ye - yb) > 3*n) {
+		return 0;
+	}
+	
+	if(n % 2 == 0 && (abs(xe - xb) + abs(ye - yb)) % 2 != 0) {
+		return 0;
+	}
+	
+	count += numRoute(xb + 2, yb + 1, xe, ye, n-1);
+	count += numRoute(xb + 2, yb - 1, xe, ye, n-1);
+	count += numRoute(xb + 1, yb + 2, xe, ye, n-1);
+	count += numRoute(xb + 1, yb - 2, xe, ye, n-1);
+	count += numRoute(xb - 2, yb + 1, xe, ye, n-1);
+	count += numRoute(xb - 2, yb - 1, xe, ye, n-1);
+	count += numRoute(xb - 1, yb + 2, xe, ye, n-1);
+	count += numRoute(xb - 1, yb - 2, xe, ye, n-1);
+	
+	return count;
 }
 
 int main(int argc, char **argv)
@@ -49,10 +62,10 @@ int main(int argc, char **argv)
 	scanf("%d %d", &xb, &yb);
 	printf("End coordinate: ");
 	scanf("%d %d", &xe, &ye);
-	printf("Length: ");
+	printf("Length: \n");
 	scanf("%d", &n);
 	
-	numRoute(xb, yb, xe, ye, n);
+	count = numRoute(xb, yb, xe, ye, n);
 	
 	printf("Number of routes: %d\n", count);
 	
