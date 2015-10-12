@@ -35,34 +35,35 @@ void *safeMalloc(int size) {
   return ptr;
 }
 
-int **makeIntArray2D(int size) {
-  int row, **arr;
-  arr = safeMalloc(size*sizeof(int *));
-  for (row=0; row<size; row++) {
-    arr[row] = safeMalloc(3*sizeof(int));
-  }
-  return arr;
-}
+int countProfit(int cost[100], int profit[100], int pr) {
+	//First base case: production resources is 0
+	for(int i = 0; )
+	
+	if(pr == 0) {
+		return 1;
+	}
+	
+	if()
 
 int main(int argc, char **argv)
 {
-	int size, **arr;
+	int size, pr, *profit, *cost;
+	char word[21] = {0};
+	profit = safeMalloc(100);
+	cost = safeMalloc(100);
 	
 	printf("Number of products: ");
 	scanf("%d", &size);
-	arr = makeIntArray2D(size);
-	char word[size][21];
-	
 	for(int i = 0; i < size; i++) {
 		printf("product: ");
 		scanf("%s", &word);
-		arr[i][0] = word[i][21];
-		printf("resource cost for %s: ", arr[i][0]);
-		scanf("%d", &arr[i][1]);
-		printf("profit for %s: ", arr[i][0]);
-		scanf("%d", &arr[i][2]);
+		printf("resource cost for %s: ", word);
+		scanf("%d", &cost[i]);
+		printf("profit for %s: ", word);
+		scanf("%d", &profit[i]);
 	}
+	printf("available production resources: ");
+	scanf("%d", &pr);
 	
 	return 0;
 }
-
