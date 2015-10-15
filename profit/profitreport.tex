@@ -1,0 +1,213 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{a4wide}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{mathtools}
+\definecolor{Gray}{gray}{0.95}
+
+% This is the list style for displaying C source code:
+\lstdefinestyle{code}{
+    language = C,					% The language of the code snippets
+    basicstyle = \small\ttfamily,	% Font of the text
+    numbers = left,					% Position of the line numbers
+    numberstyle = \footnotesize,	% Style of line numbers
+    frame = tb,				        % Style of surrounding frame
+    framextopmargin=.75mm,         % Space margin top
+    framexbottommargin=.75mm,      % Space margin bottom
+    framexleftmargin=2mm,          % Space margin left
+    framexrightmargin=2mm,         % Space margin right
+    tabsize = 3,					% Size of tab character
+    breaklines = true,             % Wrap lines of code that are too long
+    columns = fullflexible,			
+    showstringspaces = false,
+    backgroundcolor = \color{Gray}
+}
+
+% This is the list style for displaying input/output. It is different from the style above, since you don't need C keywords to be highlighted in these listings. Line numbers are also emitted in this style.
+\lstdefinestyle{stdio}{
+    basicstyle = \small\ttfamily,	% Font of the text
+    frame = tb,				        % Style of the surrounding frame
+    framextopmargin=.75mm,         % Space margin top
+    framexbottommargin=.75mm,      % Space margin bottom
+    framexleftmargin=2mm,          % Space margin left
+    framexrightmargin=2mm,         % Space margin right
+    tabsize = 3,					% Size of tab character
+    breaklines = true,             % Wrap lines of text that are too long
+    columns = flexible,			
+    showstringspaces = false,
+    backgroundcolor = \color{Gray}
+}
+
+\title{Maximum profit assignment}
+\author{Y. Moustaghfir \& S. S. Hamed\\
+        S2909758 \& S2562677}
+%------------------------------------------------------------%
+% This is where your document starts:
+
+\begin{document}
+\maketitle
+
+\section{Problem description}
+ 
+
+\section{Problem analysis}
+
+
+
+\section{Design}
+
+
+\section{Program code}
+\begin{lstlisting}[style = code, title = discs.c]
+/*
+ * profit.c
+ * 
+ * Copyright 2015 Younes Moustaghfir(s2909758) && Sharif Hamed (s2562677)
+ * 
+ */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char *readString() {
+	char longString[21];
+	char *string;
+	scanf("%s", longString);
+	string = malloc((1+strlen(longString))*sizeof(char));
+	strcpy(string, longString);
+	return string;
+}
+
+void *safeMalloc(int size) {
+  void *ptr = malloc(size);
+  if (ptr == NULL) {
+    printf("\nError: memory allocation failed....abort\n");
+    exit(-1);
+  }
+  return ptr;
+}
+
+int **makeArray(int sz) {
+  int row, **arr;
+  arr = safeMalloc(sz*sizeof(int *));
+  for (row=0; row<sz; row++) {
+    arr[row] = safeMalloc(2*sizeof(int));
+  }
+  return arr;
+}
+
+int countProfit(int **array, int pr, int products) {
+	int firstCase, secondCase;
+	//First base case: production resources is 0 or below 0 or we've run out of products
+	if(products == 0 || pr <= 0) {
+		return 0;
+	}
+	firstCase = countProfit(array, pr, products - 1); //This is to decrement over the different products
+	if(pr >= array[products - 1][0]) { //If the avaialble production resources are bigger than the cost of the product, then we can iniate the recursive function
+		secondCase = countProfit(array, (pr - array[products - 1][0]), (products - 1)) + array[products - 1][1]; 
+		if(secondCase > firstCase) {
+			return secondCase; 
+		}
+	}
+	return firstCase;
+}
+
+int main(int argc, char **argv)
+{
+	int size, pr;
+	int **array;
+	char *word;
+	
+	printf("number of products: ");
+	scanf("%d", &size);
+
+	array = makeArray(size);
+	for(int i = 0; i < size; i++) {
+		printf("product: ");
+		word = readString();
+		printf("resource cost for %s: ", word);
+		scanf("%d", &array[i][0]);
+		printf("profit for %s: ", word);
+		scanf("%d", &array[i][1]);
+	}
+
+	printf("available production resources: ");
+	scanf("%d", &pr);
+	int a = countProfit(array, pr, size);
+	
+	printf("Maximum profit: %d\n", a);
+	
+	return 0;
+}
+
+\end{lstlisting}
+
+\section{Test results}
+
+\begin{itemize}
+
+\item Input: First the size of the array, then coordinates and radius. ({\tt x}, {\tt y} and {\tt r})
+\begin{lstlisting}[style = stdio]
+5
+mustard
+8
+20
+ketchup
+5
+15
+wine
+7
+19
+beer
+5
+14
+mayonnaise
+4
+13
+14
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+Maximum profit: 42
+\end{lstlisting}
+
+
+\item Input:
+\begin{lstlisting}[style = stdio]
+5
+  2   4   5
+  3   7   1
+-2   -3   3
+-12   9  10
+  9   5   6
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+number of discs: 5
+number of non-overlapping discs: 1
+\end{lstlisting}
+
+
+\item Input: 
+\begin{lstlisting}[style = stdio]
+3
+ -5   3   4
+  3  -7   1
+ -2  -3   3
+\end{lstlisting}
+
+  Output:
+\begin{lstlisting}[style = stdio]
+number of discs: 
+number of non-overlapping discs: 1
+\end{lstlisting}
+
+\end{itemize}
+
+\section{Evaluation}
+
+\end{document}
