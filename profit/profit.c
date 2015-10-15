@@ -1,7 +1,7 @@
 /*
  * profit.c
  * 
- * Copyright 2015 Younes <younes@younes-PNB-series>
+ * Copyright 2015 Younes Moustaghfir(s2909758) && Sharif Hamed (s2562677)
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,18 @@
  * 
  */
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+char *readString() {
+	char longString[21];
+	char *string;
+	scanf("%s", longString);
+	string = malloc((1+strlen(longString))*sizeof(char));
+	strcpy(string, longString);
+	return string;
+}
 
 void *safeMalloc(int size) {
   void *ptr = malloc(size);
@@ -35,35 +43,55 @@ void *safeMalloc(int size) {
   return ptr;
 }
 
-int countProfit(int cost[100], int profit[100], int pr) {
-	//First base case: production resources is 0
-	for(int i = 0; )
-	
-	if(pr == 0) {
-		return 1;
+int **makeArray(int sz) {
+  int row, **arr;
+  arr = safeMalloc(sz*sizeof(int *));
+  for (row=0; row<sz; row++) {
+    arr[row] = safeMalloc(2*sizeof(int));
+  }
+  return arr;
+}
+
+int countProfit(int **array, int pr, int products) {
+	int firstCase, secondCase;
+	//First base case: production resources is 0 or below 0 or we've run out of products
+	if(products == 0 || pr <= 0) {
+		return 0;
 	}
-	
-	if()
+	firstCase = countProfit(array, pr, products - 1); //This is to decrement over the different products
+	if(pr >= array[products - 1][0]) { //If the avaialble production resources are bigger than the cost of the product, then we can iniate the recursive function
+		secondCase = countProfit(array, (pr - array[products - 1][0]), (products - 1)) + array[products - 1][1]; 
+		if(secondCase > firstCase) {
+			return secondCase; 
+		}
+	}
+	return firstCase;
+}
 
 int main(int argc, char **argv)
 {
-	int size, pr, *profit, *cost;
-	char word[21] = {0};
-	profit = safeMalloc(100);
-	cost = safeMalloc(100);
+	int size, pr;
+	int **array;
+	char *word;
 	
-	printf("Number of products: ");
+	printf("number of products: ");
 	scanf("%d", &size);
+
+	array = makeArray(size);
 	for(int i = 0; i < size; i++) {
 		printf("product: ");
-		scanf("%s", &word);
+		word = readString();
 		printf("resource cost for %s: ", word);
-		scanf("%d", &cost[i]);
+		scanf("%d", &array[i][0]);
 		printf("profit for %s: ", word);
-		scanf("%d", &profit[i]);
+		scanf("%d", &array[i][1]);
 	}
+
 	printf("available production resources: ");
 	scanf("%d", &pr);
+	int a = countProfit(array, pr, size);
+	
+	printf("Maximum profit: %d\n", a);
 	
 	return 0;
 }
